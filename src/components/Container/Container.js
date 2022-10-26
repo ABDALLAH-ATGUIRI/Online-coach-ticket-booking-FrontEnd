@@ -1,7 +1,9 @@
 const Container = () => {
-    return <div>Container</div>;
-  };
-  
-  export default {
-    Container
-  };
+  return (
+    <>
+      <h1>Container</h1>
+    </>
+  );
+};
+
+export default Container;

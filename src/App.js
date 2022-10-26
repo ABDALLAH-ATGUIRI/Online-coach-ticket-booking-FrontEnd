@@ -1,13 +1,13 @@
-import { Header ,Footer , Container } from "./components/index"
+import { Header, Footer, Container } from "./components/index";
 
-const App =()=>{
-    return(
-        < >
-        <Header />
-        <Container></Container>
-        <Footer />
-        </>
-    )
-}
+const App = () => {
+  return (
+    <>
+      <Header />
+      <Container />
+      <Footer />
+    </>
+  );
+};
 
-export default{App}
+export default App;
