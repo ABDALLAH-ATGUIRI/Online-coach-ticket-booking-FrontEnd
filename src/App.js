@@ -5,7 +5,7 @@ class App extends Component {
     return (
       <>
         <Header />
-        <Container></Container>
+        {/* <Container></Container> */}
         <Sidebar />
         <Footer />
       </>
