@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 class DashboardButton extends Component {
   constructor() {
     super();
@@ -9,7 +9,6 @@ class DashboardButton extends Component {
   }
   render() {
     const handleMenu = () => {
-      // do something
       this.state.open
         ? this.setState({ open: false })
         : this.setState({ open: true });
@@ -25,10 +24,7 @@ class DashboardButton extends Component {
           >
             {this.props.button.icon}
 
-            <span
-              class="flex-1 ml-3 text-left whitespace-nowrap"
-              sidebar-toggle-item
-            >
+            <span class="flex-1 ml-3 text-left whitespace-nowrap">
               {this.props.button.title}
             </span>
             <svg
@@ -56,10 +52,12 @@ class DashboardButton extends Component {
             >
               {this.props.button.children.map((req) => {
                 return (
-                  <li class="flex gap-4 pl-4 p-2 w-full text-base font-normal transition duration-75 text-blue-500 rounded-lg dark:text-white hover:-translate-y-2  hover:pt-4 hover:shadow-xl dark:hover:bg-gray-700">
-                    {req.icon}
-                    <a href="#">{req.title}</a>
-                  </li>
+                  <Link to={req.route}>
+                    <li class="flex gap-4 pl-4 p-2 w-full text-base font-normal transition duration-75 text-blue-500 rounded-lg dark:text-white hover:-translate-y-2  hover:pt-4 hover:shadow-xl dark:hover:bg-gray-700">
+                      {req.icon}
+                      <span>{req.title}</span>
+                    </li>
+                  </Link>
                 );
               })}
             </ul>
@@ -69,14 +67,14 @@ class DashboardButton extends Component {
     } else {
       return (
         <>
-          <a
-            href="#"
+          <Link
+            to={this.props.button.route}
             className="flex w-full items-center p-2 text-base font-normal text-blue-500 rounded-lg dark:text-white hover:-translate-y-2 hover:border-2 hover:shadow-lg dark:hover:bg-gray-700"
           >
             {this.props.button.icon}
 
             <span className="ml-3">{this.props.button.title}</span>
-          </a>
+          </Link>
         </>
       );
     }
