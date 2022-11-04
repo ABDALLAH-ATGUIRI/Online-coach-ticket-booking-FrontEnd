@@ -50,7 +50,7 @@ class DashboardButton extends Component {
               id="dropdown-example"
               class="py-2 flex flex-col w-full p-2 text-base font-normal"
             >
-              {this.props.button.children.map((req) => {
+              {this.props.button.children.map((req , index) => {
                 return (
                   <Link to={req.route}>
                     <li class="flex gap-4 pl-4 p-2 w-full text-base font-normal transition duration-75 text-blue-500 rounded-lg dark:text-white hover:-translate-y-2  hover:pt-4 hover:shadow-xl dark:hover:bg-gray-700">

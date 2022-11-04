@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import DashboardButton from "../../Buttons/sidebarButtons";
-import voyageIcon from "../../../assets/icons/svg/voyage";
-import addTravelIcon from "../../../assets/icons/svg/addTravel";
-import displayTravelsIcon from "../../../assets/icons/svg/displayTravels";
-import statusIcon from "../../../assets/icons/svg/status";
-import busesIcon from "../../../assets/icons/svg/buses";
-import addBusesIcon from "../../../assets/icons/svg/addBuses";
-import busesInfoIcon from "../../../assets/icons/svg/busesInfo";
-import clientsIcon from "../../../assets/icons/svg/clients";
-import bookingIcon from "../../../assets/icons/svg/booking";
-import dashboardIcon from "../../../assets/icons/svg/dashboard";
-import logoutIcon from "../../../assets/icons/svg/logout";
+import DashboardButton from "../../components/Buttons/sidebarButtons";
+import voyageIcon from "../../assets/icons/svg/voyage";
+import addTravelIcon from "../../assets/icons/svg/addTravel";
+import displayTravelsIcon from "../../assets/icons/svg/displayTravels";
+import statusIcon from "../../assets/icons/svg/status";
+import busesIcon from "../../assets/icons/svg/buses";
+import addBusesIcon from "../../assets/icons/svg/addBuses";
+import busesInfoIcon from "../../assets/icons/svg/busesInfo";
+import clientsIcon from "../../assets/icons/svg/clients";
+import bookingIcon from "../../assets/icons/svg/booking";
+import dashboardIcon from "../../assets/icons/svg/dashboard";
+import logoutIcon from "../../assets/icons/svg/logout";
 
 class Sidebar extends Component {
   constructor() {
@@ -23,7 +23,7 @@ class Sidebar extends Component {
     const Dashboard = {
       title: "Tableau de bord",
       icon: dashboardIcon.call(),
-      route: "/",
+      route: "/admin",
       children: false
     };
 
@@ -34,17 +34,17 @@ class Sidebar extends Component {
         {
           title: "Ajouter",
           icon: addTravelIcon.call(),
-          route: "/travel/create"
+          route: "/admin/travel/create"
         },
         {
           title: "Afficher tout",
           icon: displayTravelsIcon.call(),
-          route: "/travel"
+          route: "/admin/travel"
         },
         {
           title: "Statut",
           icon: statusIcon.call(),
-          route: "/state"
+          route: "/admin/state"
         }
       ]
     };
@@ -56,12 +56,12 @@ class Sidebar extends Component {
         {
           title: "Ajouter",
           icon: addBusesIcon.call(),
-          route: "/buses/create"
+          route: "/admin/buses/create"
         },
         {
           title: "Toutes les info",
           icon: busesInfoIcon.call(),
-          route: "/buses"
+          route: "/admin/buses"
         },
         {
           title: "Statut",
@@ -73,14 +73,14 @@ class Sidebar extends Component {
     const Clients = {
       title: "Clients",
       icon: clientsIcon.call(),
-      route: "/clients",
+      route: "/admin/clients",
       children: false
     };
 
     const Booking = {
       title: "Réservation",
       icon: bookingIcon.call(),
-      route: "/booking",
+      route: "/admin/booking",
       children: false
     };
 
