@@ -17,12 +17,12 @@ const router = () => {
         <div className="p-5">
           <Routes>
             <Route path="/" exact element={<Dashboard />} />
-            <Route path="/travel/create" exact element={<CreateTravels />} />
+            <Route path="travel/create" exact element={<CreateTravels />} />
             <Route path="travel" exact element={<EditTravels />} />
-            {/* <Route path="/travel/state" exact element={<TravelsState />} />
-            <Route path="/buses" exact element={<EditTravels />} />
+            <Route path="travel/state" exact element={<TravelsState />} />
+            <Route path="buses" exact element={<EditTravels />} />
             <Route path="uses/create" exact element={<CreateTravels />} />
-            <Route path="buses/state" exact element={<TravelsState />} /> */}
+            <Route path="buses/state" exact element={<TravelsState />} />
           </Routes>
         </div>
       </div>

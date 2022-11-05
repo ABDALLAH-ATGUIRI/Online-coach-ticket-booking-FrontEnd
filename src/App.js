@@ -2,6 +2,7 @@ import React, { useState, useEffect, Component } from "react";
 import { Routes, Route, Router } from "react-router-dom";
 import AdminRoutes from "./admin/router";
 import PrivateRoutes from "./utils/PrivateRoute";
+import AdminLogin from "./admin/auth/Login";
 
 class App extends Component {
   render() {
@@ -10,11 +11,12 @@ class App extends Component {
     if (role) {
       return (
         <>
-            <Routes>
-              {/* <Route element={<PrivateRoutes />}> */}
-              <Route path="admin" element={<AdminRoutes />} />
-              {/* </Route> */}
-            </Routes>
+          <Routes>
+            <Route element={<PrivateRoutes />}>
+              <Route path="admin/*" element={<AdminRoutes />} />
+            </Route>
+            <Route path="admin/login" element={<AdminLogin />}></Route>
+          </Routes>
         </>
       );
     }
