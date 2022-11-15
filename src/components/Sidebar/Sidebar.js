@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import DashboardButton from "../../components/Buttons/sidebarButtons";
+import DashboardButton  from "../../components/Buttons/sidebarButtons";
+import LogoutButton from "../../admin/auth/Logout";
 import voyageIcon from "../../assets/icons/svg/voyage";
 import addTravelIcon from "../../assets/icons/svg/addTravel";
 import displayTravelsIcon from "../../assets/icons/svg/displayTravels";
@@ -10,8 +11,6 @@ import busesInfoIcon from "../../assets/icons/svg/busesInfo";
 import clientsIcon from "../../assets/icons/svg/clients";
 import bookingIcon from "../../assets/icons/svg/booking";
 import dashboardIcon from "../../assets/icons/svg/dashboard";
-import logoutIcon from "../../assets/icons/svg/logout";
-
 class Sidebar extends Component {
   constructor() {
     super();
@@ -49,25 +48,32 @@ class Sidebar extends Component {
       ]
     };
 
+    // const Buses = {
+    //   title: "Buses",
+    //   icon: busesIcon.call(),
+    //   children: [
+    //     {
+    //       title: "Ajouter",
+    //       icon: addBusesIcon.call(),
+    //       route: "/admin/buses/create"
+    //     },
+    //     {
+    //       title: "Toutes les info",
+    //       icon: busesInfoIcon.call(),
+    //       route: "/admin/buses"
+    //     },
+    //     {
+    //       title: "Statut",
+    //       icon: statusIcon.call()
+    //     }
+    //   ]
+    // };
+
     const Buses = {
       title: "Buses",
       icon: busesIcon.call(),
-      children: [
-        {
-          title: "Ajouter",
-          icon: addBusesIcon.call(),
-          route: "/admin/buses/create"
-        },
-        {
-          title: "Toutes les info",
-          icon: busesInfoIcon.call(),
-          route: "/admin/buses"
-        },
-        {
-          title: "Statut",
-          icon: statusIcon.call()
-        }
-      ]
+      route: "/admin/buses",
+      children: false
     };
 
     const Clients = {
@@ -110,15 +116,7 @@ class Sidebar extends Component {
             </li>
           </ul>
           <div className="">
-            <a
-              href="#"
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              {logoutIcon.call()}
-              <span className="flex-1 ml-3 text-[#FE5008] font-bold whitespace-nowrap">
-                Sign In
-              </span>
-            </a>
+            <LogoutButton />
           </div>
         </div>
       </aside>

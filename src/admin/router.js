@@ -5,6 +5,7 @@ import {
   Dashboard,
   CreateTravels,
   EditTravels,
+  Buses,
   TravelsState,
   Login
 } from "./index";
@@ -12,15 +13,15 @@ const router = () => {
   return (
     <>
       <Header />
-      <div className="flex">
+      <div className="flex max-h-full">
         <Sidebar />
-        <div className="p-5">
+        <div className="w-full overflow-auto">
           <Routes>
             <Route path="/" exact element={<Dashboard />} />
             <Route path="travel/create" exact element={<CreateTravels />} />
             <Route path="travel" exact element={<EditTravels />} />
             <Route path="travel/state" exact element={<TravelsState />} />
-            <Route path="buses" exact element={<EditTravels />} />
+            <Route path="buses" exact element={<Buses />} />
             <Route path="uses/create" exact element={<CreateTravels />} />
             <Route path="buses/state" exact element={<TravelsState />} />
           </Routes>
