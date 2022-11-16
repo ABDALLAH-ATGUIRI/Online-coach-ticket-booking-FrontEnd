@@ -3,10 +3,9 @@ import axios from "../../api/axios";
 import Cookies from "universal-cookie";
 import useAuth from "../../hooks/useAuth";
 import Button from "../../components/Buttons/crudButtons";
-import DeleteIcon from "../../assets/icons/crud/delete";
 import AddIcon from "../../assets/icons/crud/add";
-import UpdateIcon from "../../assets/icons/crud/update";
 import AddBusAlert from "../../components/Popups/AddBusAlert";
+import FiliedOfTable from "../../components/Popups/filiedOfTable";
 
 const Buses = () => {
   const BASE_URL = "/bus";
@@ -15,7 +14,7 @@ const Buses = () => {
   const [success, setSuccess] = useState(false);
   const { setAuth } = useAuth();
   const [open, setOpen] = useState(false);
-
+  const [refreshData, setRefreshData] = useState(false);
   const cookie = new Cookies();
   const token = cookie.get("access-token", { path: "/admin" });
   const config = {
@@ -26,18 +25,6 @@ const Buses = () => {
     withCredentials: true
   };
 
-  const del = {
-    title: "Supprimer",
-    icon: DeleteIcon.call(),
-    color: "red",
-    route: "/bus"
-  };
-  const update = {
-    title: "Éditer",
-    icon: UpdateIcon.call(),
-    color: "blue",
-    route: "/bus"
-  };
   const add = {
     title: "Ajouter",
     icon: AddIcon.call(),
@@ -46,6 +33,7 @@ const Buses = () => {
   };
 
   const getAll = async () => {
+
     await axios.get(BASE_URL, config).then((req, res) => {
       try {
         const result = req?.data?.data;
@@ -64,13 +52,14 @@ const Buses = () => {
       }
     });
   };
-  const updateAlert = () => {
+  
+  const addAlert = () => {
     open ? setOpen(false) : setOpen(true);
   };
-
   useEffect(() => {
     getAll();
-  }, []);
+    setRefreshData(false);
+  }, [refreshData]);
 
   return (
     <>
@@ -126,7 +115,7 @@ const Buses = () => {
                   Tous les bus
                 </h1>
                 <div
-                  onClick={updateAlert}
+                  onClick={addAlert}
                   className="flex items-center sm:justify-end"
                 >
                   <Button info={add} className="bg-orange-500"></Button>
@@ -172,41 +161,29 @@ const Buses = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {open ? <AddBusAlert data={data} /> : null}
+                  {open ? (
+                    <AddBusAlert
+                      setOpen={() => {
+                        setOpen();
+                      }}
+                      setState={() => {
+                        setRefreshData();
+                      }}
+                    />
+                  ) : null}
 
                   {data.map((element, index) => {
                     return (
-                      <tr className="hover:bg-gray-100 w-full">
-                        <td className="p-4 w-4">
-                          <div className="flex items-center"></div>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm w-3/12 font-normal text-gray-500">
-                          <div className="text-base font-semibold text-gray-900">
-                            {element.bus}
-                          </div>
-                          {/* <div className="text-sm font-normal text-gray-500">#</div> */}
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-                          {element.busNumber}
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-                          {element.seatsNumber}
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-base w-3/12 font-medium text-gray-900">
-                          {element.statut == "inMaintenance"
-                            ? "en maintenance"
-                            : element.statut == "Hors service"
-                            ? "OutOfService"
-                            : "En service"}
-                        </td>
-                        <td className="flex p-4  whitespace-nowrap space-x-2 w-auto">
-                          <Button
-                            info={update}
-                            className="bg-blue-800"
-                          ></Button>
-                          <Button info={del} className="bg-red-800"></Button>
-                        </td>
-                      </tr>
+                      <FiliedOfTable
+                        open={open}
+                        setOpen={() => {
+                          setOpen();
+                        }}
+                        setState={() => {
+                          setRefreshData();
+                        }}
+                        element={element}
+                      />
                     );
                   })}
 
@@ -217,7 +194,7 @@ const Buses = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white sticky sm:flex items-center w-full sm:justify-between bottom-0 right-0 border-t border-gray-200 p-4">
+        {/* <div className="bg-white sticky sm:flex items-center w-full sm:justify-between bottom-0 right-0 border-t border-gray-200 p-4">
           {data.length > 20 ? (
             <>
               <div className="flex items-center mb-4 sm:mb-0">
@@ -305,7 +282,7 @@ const Buses = () => {
               </div>
             </>
           ) : null}
-        </div>
+        </div> */}
       </section>
     </>
   );

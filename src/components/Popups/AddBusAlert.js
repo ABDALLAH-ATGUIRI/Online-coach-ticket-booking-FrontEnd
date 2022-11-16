@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Buttons/crudButtons";
 import AddIcon from "../../assets/icons/crud/add";
+import AnnulerIcon from "../../assets/icons/crud/annuler";
 import Cookies from "universal-cookie";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
-import { useLocation, useNavigate } from "react-router-dom";
 
-const AddBusAlert = (props) => {
-  const LOGIN_URL = "/bus";
+const AddBusAlert = ({ setState, setOpen, ...rest }) => {
+  const BASE_URL = "/bus";
   const [busName, setBusName] = useState("");
   const [busNumber, setBusNumber] = useState("");
   const [busSeats, setBusSeats] = useState("");
   const [busState, setBusState] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const location = useLocation();
 
   const add = {
     title: "Ajouter",
@@ -27,6 +26,12 @@ const AddBusAlert = (props) => {
     seatsNumber: busSeats,
     statut: busState
   };
+  const annuler = {
+    title: "Fermer",
+    icon: AnnulerIcon.call(),
+    color: "red",
+    route: "/bus"
+  };
 
   const cookie = new Cookies();
   const token = cookie.get("access-token", { path: "/admin" });
@@ -39,38 +44,53 @@ const AddBusAlert = (props) => {
   };
 
   const handleSubmit = async (e) => {
-    await axios
-      .post(LOGIN_URL, JSON.stringify(data), config)
-      .then((req, res) => {
-        try {
-          console.log(req);
-          const result = req?.data?.data;
-          if (result) {
+    if (Object.values(data).some((v) => !v)) {
+      return Swal.fire({
+        position: "center-center",
+        icon: "error",
+        title: "Une des cases est vide",
+        showConfirmButton: false,
+        timer: 1000
+      });
+    } else {
+      await axios
+        .post(BASE_URL, JSON.stringify(data), config)
+        .then((req, res) => {
+          try {
+            console.log(req);
+            const result = req?.data?.data;
+            if (result) {
+              Swal.fire({
+                position: "center-center",
+                title: "L'ajout est réussi",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1000,
+                width: 500
+              }).then((req) => {
+                setState(true);
+              });
+            } else {
+              Swal.fire({
+                position: "center-center",
+                icon: "error",
+                title: "L'identifiant du bus existe déjà",
+                showConfirmButton: false,
+                timer: 1000
+              });
+            }
+          } catch (error) {
             Swal.fire({
               position: "center-center",
-              title: "L'ajout est réussi",
-              icon: "success",
+              icon: "error",
+              title: "Il y a une erreur Retour à la page d'accueil",
               showConfirmButton: false,
-              timer: 1000,
-              width: 500
-            })
+              timer: 1000
+            });
           }
-        } catch (error) {
-          if (!error?.response) {
-            setErrMsg("No Server Response");
-          } else if (error.response?.status === 400) {
-            setErrMsg("Missing Username or Password");
-          } else if (errMsg.response?.status === 401) {
-            setErrMsg("Unauthorized");
-          } else {
-            setErrMsg("Login Failed");
-          }
-        }
-      });
+        });
+    }
   };
-  useEffect(() => {con
-    handleSubmit();
-  }, [props.data]);
   return (
     <>
       <tr className=" bg-orange-300 w-full">
@@ -119,15 +139,24 @@ const AddBusAlert = (props) => {
             onChange={(e) => setBusState(e.target.value)}
             required
           >
-            <option selected>état du bus</option>
+            <option selected value="">
+              état du bus
+            </option>
             <option value="inMaintenance">En maintenance</option>
             <option value="OutOfService">Hors service</option>
             <option value="inService">En service</option>
           </select>
         </td>
-        <td className="p-4 whitespace-nowrap space-x-2 w-64">
+        <td className="p-4 flex whitespace-nowrap space-x-2 w-64">
           <div onClick={handleSubmit}>
             <Button info={add} className="bg-green-700"></Button>
+          </div>
+          <div
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            <Button info={annuler} className="bg-red-700"></Button>
           </div>
         </td>
       </tr>
