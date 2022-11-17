@@ -4,11 +4,20 @@ import Cookies from "universal-cookie";
 import useAuth from "../../hooks/useAuth";
 import Button from "../../components/Buttons/crudButtons";
 import AddIcon from "../../assets/icons/crud/add";
-import AddBusAlert from "../../components/Popups/AddBusAlert";
+import AddBusAlert from "../../components/TableauCom/AddBusAlert";
 import displayTravelsIcon from "../../assets/icons/svg/displayTravels";
-import FiliedOfTableTravel from "../../components/Popups/filiedOfTableTravel";
+import DeleteIcon from "../../assets/icons/crud/delete";
+import UpdateIcon from "../../assets/icons/crud/update";
+import AnnulerIcon from "../../assets/icons/crud/annuler";
+import CheckIcon from "../../assets/icons/crud/check";
+import FormVoyage from "../../components/TableauCom/formVoyage";
+import BreakpointsVoyage from "../../components/TableauCom/breakpointsVoyage";
+
 const EditTravels = () => {
   const BASE_URL = "/voyage";
+  const [nowDate, setNowDate] = useState("");
+  const [departDate, setDepartDate] = useState("");
+  const [arrivalDate, setArrivalDate] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [data, setData] = useState([]);
   const [success, setSuccess] = useState(false);
@@ -25,10 +34,28 @@ const EditTravels = () => {
     withCredentials: true
   };
 
+  const del = {
+    title: "Supprimer",
+    icon: DeleteIcon.call(),
+    color: "red",
+    route: "/bus"
+  };
+  const update = {
+    title: "Éditer",
+    icon: UpdateIcon.call(),
+    color: "blue",
+    route: "/bus"
+  };
+  const annuler = {
+    title: "Fermer",
+    icon: AnnulerIcon.call(),
+    color: "red",
+    route: "/bus"
+  };
   const add = {
-    title: "Ajouter",
-    icon: AddIcon.call(),
-    color: "orange",
+    title: "Éditer",
+    icon: CheckIcon.call(),
+    color: "blue",
     route: "/bus"
   };
 
@@ -43,7 +70,6 @@ const EditTravels = () => {
         if (result && result.length == 0) {
           setErrMsg("données non définies");
         } else if (result) {
-          console.log(result);
           setData(result);
           setSuccess(true);
         }
@@ -56,10 +82,7 @@ const EditTravels = () => {
   const addAlert = () => {
     open ? setOpen(false) : setOpen(true);
   };
-  useEffect(() => {
-    getAll();
-    setRefreshData(false);
-  }, [refreshData]);
+
   return (
     <>
       <section className="overflow-auto max-h-[650px]">
@@ -95,7 +118,7 @@ const EditTravels = () => {
                         href="#"
                         className="text-gray-700 hover:text-gray-900 ml-1 md:ml-2 text-sm font-medium"
                       >
-                        Tous les voyages
+                        Modifier le voyage
                       </a>
                     </div>
                   </li>
@@ -104,7 +127,7 @@ const EditTravels = () => {
 
               <div className="flex justify-between sm:flex items-center md:divide-x md:divide-gray-100">
                 <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-                  Tous les voyages
+                  Modifier le voyage
                 </h1>
                 <div
                   onClick={addAlert}
@@ -116,174 +139,32 @@ const EditTravels = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-full ">
-          <div className="align-middle inline-block min-w-full">
-            <div className="shadow ">
-              <table className="table-fixed min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr className="w-full">
-                    <th
-                      scope="col"
-                      className="p-4 text-left w-1/6 text-xs font-medium text-gray-500 uppercase"
-                    >
-                      Gare de départ
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
-                    >
-                      Gare d'arrivée
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
-                    >
-                      Nom de bus
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
-                    >
-                      date de départ
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
-                    >
-                      date d'arrivée
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
-                    >
-                      Statut
-                    </th>
-                    <th scope="col" className="p-4"></th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {open ? (
-                    <AddBusAlert
-                      setOpen={() => {
-                        setOpen();
-                      }}
-                      setState={() => {
-                        setRefreshData();
-                      }}
-                    />
-                  ) : null}
 
-                  {data.map((element, index) => {
-                    return (
-                      <FiliedOfTableTravel
-                        open={open}
-                        setOpen={() => {
-                          setOpen();
-                        }}
-                        setState={() => {
-                          setRefreshData();
-                        }}
-                        element={element}
-                      />
-                    );
-                  })}
-
-                  {/* {{ end -}}
-                    {{< /products.inline >}}                        */}
-                </tbody>
-              </table>
-            </div>
+        <div class="h-full my-2 bg-gray-100 flex flex-col mb-16 items-center justify-center">
+          <div class="bg-white w-full rounded shadow-lg p-4 px-4 md:p-8">
+            <FormVoyage />
+            <hr />
+            <BreakpointsVoyage />
           </div>
         </div>
-        {/* <div className="bg-white sticky sm:flex items-center w-full sm:justify-between bottom-0 right-0 border-t border-gray-200 p-4">
-          {data.length > 20 ? (
-            <>
-              <div className="flex items-center mb-4 sm:mb-0">
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-gray-900 cursor-pointer p-1 hover:bg-gray-100 rounded inline-flex justify-center"
-                >
-                  <svg
-                    className="w-7 h-7"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-gray-900 cursor-pointer p-1 hover:bg-gray-100 rounded inline-flex justify-center mr-2"
-                >
-                  <svg
-                    className="w-7 h-7"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-                <span className="text-sm font-normal text-gray-500">
-                  Showing
-                  <span className="text-gray-900 font-semibold">
-                    1-20
-                  </span> of{" "}
-                  <span className="text-gray-900 font-semibold">
-                    {data.length}
-                  </span>
-                </span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <a
-                  href="#"
-                  className="flex-1 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center"
-                >
-                  <svg
-                    className="-ml-1 mr-1 h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  Previous
-                </a>
-                <a
-                  href="#"
-                  className="flex-1 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center"
-                >
-                  Next
-                  <svg
-                    className="-mr-1 ml-1 h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </div>
-            </>
-          ) : null}
-        </div> */}
+        <div className="fixed bottom-0 w-full p-4 bg-orange-500 flex  z-50 justify-center align-center gap-10 ">
+          <div
+            className="w-1/6"
+            //   onClick={() => {
+            //     updateBus();
+            //   }}
+          >
+            <Button info={add} className="bg-green-700"></Button>
+          </div>
+          <div
+            className="w-1/6"
+            //   onClick={() => {
+            //     setUpdateField(true);
+            //   }}
+          >
+            <Button info={annuler} className="bg-red-700"></Button>
+          </div>
+        </div>
       </section>
     </>
   );

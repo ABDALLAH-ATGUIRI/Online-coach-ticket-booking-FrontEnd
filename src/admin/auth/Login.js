@@ -38,7 +38,10 @@ const Login = () => {
             setPwd("");
             setSuccess(true);
             setAuth({ token: token });
-            cookie.set("access-token", token, { path: "/admin" });
+            cookie.set("access-token", token, {
+              path: "/admin",
+              expiresIn: "5h"
+            });
             navigate(from);
           }
         } catch (error) {

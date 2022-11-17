@@ -5,19 +5,18 @@ import useAuth from "../../hooks/useAuth";
 import Button from "../../components/Buttons/crudButtons";
 import AddIcon from "../../assets/icons/crud/add";
 import AddBusAlert from "../../components/TableauCom/AddBusAlert";
-import FiliedOfTable from "../../components/TableauCom/filiedOfTable";
-
-const Buses = () => {
-  const BASE_URL = "/bus";
+import displayTravelsIcon from "../../assets/icons/svg/displayTravels";
+import FiliedOfTableTravel from "../../components/TableauCom/filiedOfTableTravel";
+const Travels = () => {
+  const BASE_URL = "/voyage";
   const [errMsg, setErrMsg] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [success, setSuccess] = useState(false);
   const { setAuth } = useAuth();
   const [open, setOpen] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
   const cookie = new Cookies();
   const token = cookie.get("access-token", { path: "/admin" });
-
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +33,6 @@ const Buses = () => {
   };
 
   const getAll = async () => {
-
     await axios.get(BASE_URL, config).then((req, res) => {
       try {
         const result = req?.data?.data;
@@ -53,7 +51,7 @@ const Buses = () => {
       }
     });
   };
-  
+
   const addAlert = () => {
     open ? setOpen(false) : setOpen(true);
   };
@@ -61,7 +59,6 @@ const Buses = () => {
     getAll();
     setRefreshData(false);
   }, [refreshData]);
-
   return (
     <>
       <section className="overflow-auto max-h-[650px]">
@@ -73,17 +70,10 @@ const Buses = () => {
                   <li className="inline-flex items-center">
                     <a
                       href="#"
-                      className="text-gray-700 hover:text-gray-900 inline-flex items-center"
+                      className="text-gray-700 hover:text-gray-900 inline-flex gap-2 items-center"
                     >
-                      <svg
-                        className="w-5 h-5 mr-2.5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                      </svg>
-                      Tableau de bord
+                      {displayTravelsIcon.call()}
+                      Voyages
                     </a>
                   </li>
                   <li>
@@ -104,7 +94,7 @@ const Buses = () => {
                         href="#"
                         className="text-gray-700 hover:text-gray-900 ml-1 md:ml-2 text-sm font-medium"
                       >
-                        Buses
+                        Tous les voyages
                       </a>
                     </div>
                   </li>
@@ -113,7 +103,7 @@ const Buses = () => {
 
               <div className="flex justify-between sm:flex items-center md:divide-x md:divide-gray-100">
                 <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-                  Tous les bus
+                  Tous les voyages
                 </h1>
                 <div
                   onClick={addAlert}
@@ -130,31 +120,40 @@ const Buses = () => {
             <div className="shadow ">
               <table className="table-fixed min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
-                  <tr className="w-full">
-                    <th scope="col" className="p-4">
-                      <div className="flex items-center"></div>
-                    </th>
+                  <tr className="w-full text-center">
                     <th
                       scope="col"
-                      className="p-4 w-11 text-left text-xs font-medium text-gray-500 uppercase"
+                      className="p-4 w-1/6 text-xs font-medium text-gray-500 uppercase"
                     >
-                      Nom de l'autobus
+                      Gare de départ
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
+                      className="p-4 w-1/6 text-xs font-medium text-gray-500 uppercase"
                     >
-                      Numéro d'autobus
+                      Gare d'arrivée
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
+                      className="p-4 text-xs font-medium text-gray-500 uppercase"
                     >
-                      Nombre de sièges
+                      Nom de bus
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-left text-xs font-medium text-gray-500 uppercase"
+                      className="p-4 text-xs font-medium text-gray-500 uppercase"
+                    >
+                      date de départ
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-gray-500 uppercase"
+                    >
+                      date d'arrivée
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-gray-500 uppercase"
                     >
                       Statut
                     </th>
@@ -173,20 +172,22 @@ const Buses = () => {
                     />
                   ) : null}
 
-                  {data.map((element, index) => {
-                    return (
-                      <FiliedOfTable
-                        open={open}
-                        setOpen={() => {
-                          setOpen();
-                        }}
-                        setState={() => {
-                          setRefreshData();
-                        }}
-                        element={element}
-                      />
-                    );
-                  })}
+                  {data
+                    ? data.map((element, index) => {
+                        return (
+                          <FiliedOfTableTravel
+                            open={open}
+                            setOpen={() => {
+                              setOpen();
+                            }}
+                            setState={() => {
+                              setRefreshData();
+                            }}
+                            element={element}
+                          />
+                        );
+                      })
+                    : null}
 
                   {/* {{ end -}}
                     {{< /products.inline >}}                        */}
@@ -289,4 +290,4 @@ const Buses = () => {
   );
 };
 
-export default Buses;
+export default Travels;

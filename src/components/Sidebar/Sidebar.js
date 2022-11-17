@@ -36,9 +36,9 @@ class Sidebar extends Component {
           route: "/admin/travel/create"
         },
         {
-          title: "Afficher tout",
+          title: "Modifier",
           icon: displayTravelsIcon.call(),
-          route: "/admin/travel"
+          route: "/admin/travel/edit"
         },
         {
           title: "Statut",

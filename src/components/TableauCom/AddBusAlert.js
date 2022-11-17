@@ -13,6 +13,8 @@ const AddBusAlert = ({ setState, setOpen, ...rest }) => {
   const [busSeats, setBusSeats] = useState("");
   const [busState, setBusState] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const cookie = new Cookies();
+  const token = cookie.get("access-token", { path: "/admin" });
 
   const add = {
     title: "Ajouter",
@@ -33,8 +35,6 @@ const AddBusAlert = ({ setState, setOpen, ...rest }) => {
     route: "/bus"
   };
 
-  const cookie = new Cookies();
-  const token = cookie.get("access-token", { path: "/admin" });
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -56,8 +56,8 @@ const AddBusAlert = ({ setState, setOpen, ...rest }) => {
       await axios
         .post(BASE_URL, JSON.stringify(data), config)
         .then((req, res) => {
+          
           try {
-            console.log(req);
             const result = req?.data?.data;
             if (result) {
               Swal.fire({
